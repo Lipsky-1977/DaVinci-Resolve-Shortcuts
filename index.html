@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>DaVinci Resolve 快捷键查询</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27><rect width=%2732%27 height=%2732%27 rx=%274%27 fill=%27%232a2a2a%27/><text x=%2716%27 y=%2722%27 font-size=%2716%27 font-weight=%27bold%27 fill=%27%230066FF%27 text-anchor=%27middle%27>DR</text></svg>">
+<style>
+:root{--bg:#f5f5f7;--surface:#fff;--surface2:#f0f0f2;--border:#e0e0e4;--text:#1d1d1f;--text2:#8e8e93;--accent:#0066FF;--accent2:#0052cc;--accent-bg:rgba(0,102,255,.12);--radius:10px;--shadow:0 .5px 2px rgba(0,0,0,.06),0 1px 4px rgba(0,0,0,.04)}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.header{background:linear-gradient(180deg,#0a0a0f 0%,#1a1a2e 100%);padding:0 0 10px 0;position:sticky;top:0;z-index:100;box-shadow:0 1px 8px rgba(0,0,0,.2)}
+.header-top{display:flex;align-items:center;gap:8px;padding:10px 14px 8px}
+.header-top h1{font-size:16px;font-weight:700;color:#fff;display:flex;align-items:center;gap:6px}
+.header-top h1 span{color:var(--accent)}
+.header-top .badge{font-size:10px;color:#98989d;background:rgba(255,255,255,.08);padding:1px 7px;border-radius:10px;margin-left:2px}
+.search-wrap{position:relative;margin:0 14px}
+.search-wrap .icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:#8e8e93;pointer-events:none}
+.search-bar{-webkit-appearance:none;appearance:none;width:100%;padding:9px 12px 9px 34px;border-radius:8px;border:1px solid #2a2a4e;background:#1a1a3e;color:#f5f5f7;font-size:15px;outline:none;transition:border .2s,background .2s}
+.search-bar::placeholder{color:#8e8e93;font-size:14px}
+.search-bar:focus{border-color:var(--accent);background:#0d0d2a}
+.tabs{display:flex;gap:5px;overflow-x:auto;padding:8px 14px 4px;scrollbar-width:none;-ms-overflow-style:none;scroll-behavior:smooth;background:var(--bg)}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex-shrink:0;padding:6px 13px;border-radius:16px;border:1px solid var(--border);background:var(--surface);font-size:12px;cursor:pointer;transition:all .2s;color:var(--text2);white-space:nowrap;-webkit-user-select:none;user-select:none;touch-action:manipulation}
+.tab:active{transform:scale(.95)}
+.tab.active{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:600}
+.tab .cnt{font-size:10px;opacity:.65;margin-left:3px}
+.stats{font-size:12px;color:var(--text2);padding:8px 14px 6px;display:flex;justify-content:space-between;align-items:center}
+.grid{display:flex;flex-direction:column;gap:5px;padding:0 12px 60px}
+.item{display:flex;align-items:flex-start;gap:10px;background:var(--surface);border-radius:var(--radius);padding:10px 12px;border:1px solid var(--border);cursor:default;transition:border .15s,box-shadow .15s,transform .1s;touch-action:manipulation;animation:fadeIn .18s ease-out}
+.item:active{transform:scale(.98)}
+.keys{display:flex;gap:3px;flex-wrap:wrap;flex-shrink:0;max-width:140px}
+.key{display:inline-flex;align-items:center;justify-content:center;min-width:28px;height:26px;padding:0 6px;background:linear-gradient(180deg,#2c2c2e 0%,#1d1d1f 100%);color:#f5f5f7;border-radius:4px;font-size:11px;font-weight:700;font-family:"SF Mono",Menlo,monospace;border-bottom:1.5px solid #000;letter-spacing:-.2px}
+.key.accent{background:linear-gradient(180deg,var(--accent) 0%,#004dbf 100%);border-bottom-color:#003380;color:#fff}
+.key.mod{font-size:9px;padding:0 4px;min-width:22px}
+.key.special{background:linear-gradient(180deg,#5a5a5e,#3a3a3c);border-bottom-color:#29292b;font-size:10px;min-width:22px}
+.desc{flex:1;min-width:0;font-size:13px;line-height:1.4}
+.detail{font-size:11px;color:var(--text2);margin-top:2px;line-height:1.3}
+.no-results{text-align:center;padding:60px 20px;color:var(--text2)}
+.no-results svg{width:40px;height:40px;margin-bottom:10px;opacity:.35}
+.bottom-bar{position:fixed;bottom:0;left:0;right:0;height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;background:rgba(245,245,247,.92);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-top:1px solid var(--border);z-index:200}
+.bottom-bar .info{font-size:11px;color:var(--text2)}
+.bottom-btn{display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:6px;border:none;background:var(--accent);color:#fff;font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation}
+.bottom-btn:active{opacity:.8}
+.bottom-btn svg{width:14px;height:14px}
+@media(prefers-color-scheme:dark){
+:root{--bg:#1c1c1e;--surface:#2c2c2e;--surface2:#3a3a3c;--border:#48484a;--text:#f5f5f7;--text2:#98989d;--accent-bg:rgba(0,102,255,.15);--shadow:0 .5px 2px rgba(0,0,0,.25),0 1px 4px rgba(0,0,0,.2)}
+.bottom-bar{background:rgba(28,28,30,.92);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+}
+@keyframes fadeIn{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-top">
+    <h1><svg width="26" height="26" viewBox="0 0 32 32"><rect width="32" height="32" rx="5" fill="%230066FF"/><text x="8" y="21" font-size="12" font-weight="bold" fill="%23fff">DR</text></svg>DaVinci Resolve <span>19+</span><span class="badge" id="totalBadge">0</span></h1>
+  </div>
+  <form class="search-wrap" id="searchForm" autocomplete="off">
+    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+    <input class="search-bar" id="searchInput" type="search" placeholder="搜索快捷键…" enterkeyhint="search">
+  </form>
+</div>
+<div class="tabs" id="tabsContainer"></div>
+<div class="stats"><span id="resultCount">全部</span></div>
+<div class="grid" id="grid"></div>
+<div class="no-results" id="noResults" style="display:none">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+  <div style="font-size:15px;font-weight:600;margin-bottom:3px">没有匹配的快捷键</div>
+  <div style="font-size:13px">换个关键词试试</div>
+</div>
+<div class="bottom-bar">
+  <span class="info" id="bottomInfo">全部</span>
+  <button class="bottom-btn" id="scrollTopBtn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+    顶部
+  </button>
+</div>
+<script>
+const D=[
+  // ── 播放控制 ──
+  {keys:["Space"],desc:"播放/暂停",cat:"播放控制",detail:"播放或暂停时间线"},
+  {keys:["L"],desc:"向前播放",cat:"播放控制",detail:"L键向前播放（连按加速）"},
+  {keys:["J"],desc:"反向播放",cat:"播放控制",detail:"J键反向播放（连按加速）"},
+  {keys:["K"],desc:"暂停",cat:"播放控制",detail:"暂停播放"},
+  {keys:["Shift","L"],desc:"2倍速播放",cat:"播放控制",detail:"以2倍速度向前播放"},
+  {keys:["Shift","J"],desc:"2倍速反向",cat:"播放控制",detail:"以2倍速度反向播放"},
+  {keys:["Ctrl","Space"],desc:"播放周围",cat:"播放控制",detail:"在当前位置周围播放"},
+  {keys:["F"],desc:"全屏预览",cat:"播放控制",detail:"切换全屏预览模式"},
+  {keys:["F11"],desc:"影院模式",cat:"播放控制",detail:"F11切换影院全屏模式"},
+  {keys:["F12"],desc:"影院模式",cat:"播放控制",detail:"F12全屏影院预览"},
+  {keys:["I"],desc:"标记入点",cat:"播放控制",detail:"Mark In - 设置片段入点"},
+  {keys:["O"],desc:"标记出点",cat:"播放控制",detail:"Mark Out - 设置片段出点"},
+  {keys:["Shift","I"],desc:"到入点",cat:"播放控制",detail:"跳转到入点位置"},
+  {keys:["Shift","O"],desc:"到出点",cat:"播放控制",detail:"跳转到出点位置"},
+  {keys:["X"],desc:"标记片段",cat:"播放控制",detail:"Mark Clip - 标记整个片段"},
+  {keys:["Alt","X"],desc:"清除标记",cat:"播放控制",detail:"清除入出点标记"},
+  {keys:["Alt","I"],desc:"清除入点",cat:"播放控制",detail:"清除当前入点"},
+  {keys:["Alt","O"],desc:"清除出点",cat:"播放控制",detail:"清除当前出点"},
+
+  // ── 时间线导航 ──
+  {keys:["Left"],desc:"上一帧",cat:"时间线导航",detail:"后退一帧"},
+  {keys:["Right"],desc:"下一帧",cat:"时间线导航",detail:"前进一帧"},
+  {keys:["Shift","Left"],desc:"后退5帧",cat:"时间线导航",detail:"快速后退5帧"},
+  {keys:["Shift","Right"],desc:"前进5帧",cat:"时间线导航",detail:"快速前进5帧"},
+  {keys:[","],desc:"后退一帧",cat:"时间线导航",detail:"步退一帧"},
+  {keys:["."],desc:"前进一帧",cat:"时间线导航",detail:"步进一帧"},
+  {keys:["Up"],desc:"上一编辑点",cat:"时间线导航",detail:"跳到上一个编辑点"},
+  {keys:["Down"],desc:"下一编辑点",cat:"时间线导航",detail:"跳到下一个编辑点"},
+  {keys:["Home"],desc:"到起始",cat:"时间线导航",detail:"跳到时间线起始位置"},
+  {keys:["End"],desc:"到结束",cat:"时间线导航",detail:"跳到时间线结束位置"},
+  {keys:["PageUp"],desc:"上一轨道",cat:"时间线导航",detail:"切换到上一个轨道"},
+  {keys:["PageDown"],desc:"下一轨道",cat:"时间线导航",detail:"切换到下一个轨道"},
+  {keys:["\\"],desc:"适配时间线",cat:"时间线导航",detail:"将时间线适配到窗口"},
+  {keys:["+","-"],desc:"时间线缩放",cat:"时间线导航",detail:"+放大 -缩小 时间线显示"},
+  {keys:["Alt","滚轮"],desc:"时间线缩放",cat:"时间线导航",detail:"Alt+滚轮缩放时间线",m:true},
+  {keys:["Ctrl","+","-"],desc:"垂直缩放",cat:"时间线导航",detail:"Ctrl+ +/- 轨道垂直缩放"},
+
+  // ── 编辑与剪辑 ──
+  {keys:["Ctrl","Z"],desc:"撤销",cat:"编辑与剪辑",detail:"Undo - 撤销上一步操作"},
+  {keys:["Ctrl","Shift","Z"],desc:"重做",cat:"编辑与剪辑",detail:"Redo - 重做已撤销操作"},
+  {keys:["Ctrl","X"],desc:"剪切",cat:"编辑与剪辑",detail:"剪切选定内容"},
+  {keys:["Ctrl","C"],desc:"复制",cat:"编辑与剪辑",detail:"复制选定片段"},
+  {keys:["Ctrl","V"],desc:"粘贴",cat:"编辑与剪辑",detail:"粘贴剪贴板内容"},
+  {keys:["Ctrl","Shift","V"],desc:"粘贴属性",cat:"编辑与剪辑",detail:"仅粘贴片段属性"},
+  {keys:["Delete"],desc:"删除",cat:"编辑与剪辑",detail:"删除选定片段"},
+  {keys:["Backspace"],desc:"波纹删除",cat:"编辑与剪辑",detail:"Ripple Delete - 删除并合拢"},
+  {keys:["Ctrl","I"],desc:"导入媒体",cat:"编辑与剪辑",detail:"导入媒体文件到媒体池"},
+  {keys:["Ctrl","B"],desc:"切割",cat:"编辑与剪辑",detail:"Blade - 在播放头位置切割"},
+  {keys:["Ctrl","Shift","B"],desc:"全部切割",cat:"编辑与剪辑",detail:"切割所有轨道"},
+  {keys:["Ctrl","D"],desc:"复制片段",cat:"编辑与剪辑",detail:"Duplicate - 复制当前片段"},
+  {keys:["D"],desc:"启用/禁用",cat:"编辑与剪辑",detail:"切换片段启用状态"},
+  {keys:["M"],desc:"添加标记",cat:"编辑与剪辑",detail:"在当前位置添加标记"},
+  {keys:["Shift","M"],desc:"标记菜单",cat:"编辑与剪辑",detail:"标记时间线管理"},
+  {keys:["Ctrl","M"],desc:"标记颜色",cat:"编辑与剪辑",detail:"修改当前标记颜色"},
+  {keys:["N"],desc:"新建时间线",cat:"编辑与剪辑",detail:"创建新的时间线"},
+  {keys:["R"],desc:"反转片段",cat:"编辑与剪辑",detail:"Reverse Clip - 反转播放方向"},
+
+  // ── 切割与修剪 ──
+  {keys:["A"],desc:"选择模式",cat:"切割与修剪",detail:"Selection Mode - 默认选择"},
+  {keys:["T"],desc:"修剪模式",cat:"切割与修剪",detail:"Trim Mode - 进入修剪编辑"},
+  {keys:["B"],desc:"切割模式",cat:"切割与修剪",detail:"Blade Mode - 进入刀片切割"},
+  {keys:["W"],desc:"动态修剪",cat:"切割与修剪",detail:"Dynamic Trim - 动态修剪模式"},
+  {keys:["R"],desc:"卷动模式",cat:"切割与修剪",detail:"Roll Mode - 卷动编辑"},
+  {keys:["Shift","R"],desc:"波纹修剪",cat:"切割与修剪",detail:"Ripple Trim - 波纹修剪模式"},
+  {keys:["Y"],desc:"滑移修剪",cat:"切割与修剪",detail:"Slip Trim - 滑移编辑"},
+  {keys:["U"],desc:"滑动修剪",cat:"切割与修剪",detail:"Slide Trim - 滑动编辑"},
+  {keys:["E"],desc:"扩展编辑",cat:"切割与修剪",detail:"Extend Edit - 扩展到编辑点"},
+  {keys:["Ctrl","B"],desc:"切割",cat:"切割与修剪",detail:"Blade - 切割当前片段"},
+  {keys:["Ctrl","Shift","B"],desc:"全部切割",cat:"切割与修剪",detail:"在所有轨道上切割"},
+  {keys:["Shift","B"],desc:"切割全部",cat:"切割与修剪",detail:"切割所有选中的轨道"},
+
+  // ── 调色 ──
+  {keys:["Shift","5"],desc:"调色页面",cat:"调色",detail:"切换到Color调色工作区"},
+  {keys:["Alt","S"],desc:"静帧",cat:"调色",detail:"Still - 抓取当前画面静帧"},
+  {keys:["Shift","S"],desc:"显示静帧",cat:"调色",detail:"显示静帧画廊"},
+  {keys:["Alt","G"],desc:"画廊",cat:"调色",detail:"Gallery - 打开画廊面板"},
+  {keys:["Alt","W"],desc:"调色板",cat:"调色",detail:"Color Warper - 打开色轮"},
+  {keys:["Alt","N"],desc:"节点面板",cat:"调色",detail:"Nodes - 打开节点编辑面板"},
+  {keys:["Ctrl","Y"],desc:"示波器",cat:"调色",detail:"Scopes - 打开视频示波器"},
+  {keys:["Shift","H"],desc:"高光",cat:"调色",detail:"Highlight - 调整高光区域"},
+  {keys:["Shift","L"],desc:"阴影",cat:"调色",detail:"Lift - 调整阴影区域"},
+  {keys:["Shift","G"],desc:"伽马",cat:"调色",detail:"Gamma - 调整中间调"},
+  {keys:["Shift","A"],desc:"增益",cat:"调色",detail:"Gain - 调整亮部增益"},
+  {keys:["Shift","C"],desc:"对比度",cat:"调色",detail:"Contrast - 调整对比度"},
+  {keys:["Shift","S"],desc:"饱和度",cat:"调色",detail:"Saturation - 调整饱和度"},
+  {keys:["Shift","T"],desc:"色温",cat:"调色",detail:"Temp - 调整色温"},
+  {keys:["Shift","O"],desc:"偏移",cat:"调色",detail:"Offset - 整体偏移调整"},
+  {keys:["Ctrl","Shift","W"],desc:"波形图",cat:"调色",detail:"Waveform - 波形示波器"},
+  {keys:["Ctrl","Shift","V"],desc:"矢量图",cat:"调色",detail:"Vectorscope - 矢量示波器"},
+  {keys:["Ctrl","Shift","H"],desc:"直方图",cat:"调色",detail:"Histogram - 直方图"},
+  {keys:["Ctrl","Shift","I"],desc:"分屏",cat:"调色",detail:"Split Screen - 分屏比较"},
+
+  // ── Fusion合成 ──
+  {keys:["Shift","6"],desc:"Fusion页面",cat:"Fusion合成",detail:"切换到Fusion合成工作区"},
+  {keys:["Ctrl","Space"],desc:"搜索工具",cat:"Fusion合成",detail:"搜索并添加Fusion节点"},
+  {keys:["Ctrl","T"],desc:"添加工具",cat:"Fusion合成",detail:"Add Tool - 添加新节点"},
+  {keys:["F"],desc:"框架视图",cat:"Fusion合成",detail:"Frame View - 适配视图"},
+  {keys:["1","2"],desc:"查看器切换",cat:"Fusion合成",detail:"1=查看器1 2=查看器2"},
+  {keys:["Ctrl","R"],desc:"渲染",cat:"Fusion合成",detail:"渲染当前Fusion合成"},
+  {keys:["Ctrl","D"],desc:"禁用节点",cat:"Fusion合成",detail:"禁用/启用选定节点"},
+  {keys:["Ctrl","G"],desc:"群组节点",cat:"Fusion合成",detail:"Group - 节点编组"},
+  {keys:["Ctrl","Shift","G"],desc:"取消群组",cat:"Fusion合成",detail:"Ungroup - 取消节点组"},
+  {keys:["Ctrl","P"],desc:"发布",cat:"Fusion合成",detail:"Publish - 发布节点控件"},
+  {keys:["Alt","点击"],desc:"查看节点",cat:"Fusion合成",detail:"Alt+点击节点查看输出",m:true},
+
+  // ── Fairlight音频 ──
+  {keys:["Shift","7"],desc:"Fairlight页",cat:"Fairlight音频",detail:"切换到Fairlight音频工作区"},
+  {keys:["Shift","Space"],desc:"播放/暂停",cat:"Fairlight音频",detail:"在Fairlight页面播放音频"},
+  {keys:["Shift","W"],desc:"写入",cat:"Fairlight音频",detail:"Write - 自动写入模式"},
+  {keys:["Shift","R"],desc:"读取",cat:"Fairlight音频",detail:"Read - 读取自动模式"},
+  {keys:["Shift","T"],desc:"触控",cat:"Fairlight音频",detail:"Touch - 触控自动模式"},
+  {keys:["Shift","L"],desc:"锁定",cat:"Fairlight音频",detail:"Latched - 锁定自动模式"},
+  {keys:["H"],desc:"自动化",cat:"Fairlight音频",detail:"Automation - 显示自动化"},
+  {keys:["Alt","Up"],desc:"音量增大",cat:"Fairlight音频",detail:"提高轨道音量"},
+  {keys:["Alt","Down"],desc:"音量减小",cat:"Fairlight音频",detail:"降低轨道音量"},
+  {keys:["Ctrl","Shift","X"],desc:"交叉淡化",cat:"Fairlight音频",detail:"Crossfade - 音频交叉淡化"},
+
+  // ── 页面切换 ──
+  {keys:["Shift","1"],desc:"编辑页面",cat:"页面切换",detail:"Edit - 切换到剪辑编辑页面"},
+  {keys:["Shift","2"],desc:"剪切页面",cat:"页面切换",detail:"Cut - 切换到快速剪辑页面"},
+  {keys:["Shift","3"],desc:"调色页面",cat:"页面切换",detail:"Color - 切换到调色页面"},
+  {keys:["Shift","4"],desc:"效果页面",cat:"页面切换",detail:"Effects - 切换到特效库"},
+  {keys:["Shift","5"],desc:"调色页(2)",cat:"页面切换",detail:"Color - 切换到调色工作区"},
+  {keys:["Shift","6"],desc:"Fusion页",cat:"页面切换",detail:"Fusion - 切换到合成页面"},
+  {keys:["Shift","7"],desc:"Fairlight页",cat:"页面切换",detail:"Fairlight - 音频页面"},
+  {keys:["Shift","8"],desc:"交付页面",cat:"页面切换",detail:"Deliver - 切换到导出渲染页"},
+  {keys:["Shift","9"],desc:"媒体池",cat:"页面切换",detail:"Media Pool - 打开媒体池"},
+  {keys:["Ctrl","Tab"],desc:"下一页面",cat:"页面切换",detail:"循环切换到下一个工作区"},
+  {keys:["Ctrl","Shift","Tab"],desc:"上一页面",cat:"页面切换",detail:"循环切换到上一个工作区"},
+
+  // ── 交付 ──
+  {keys:["Shift","8"],desc:"交付页面",cat:"交付",detail:"Deliver - 切换到渲染导出"},
+  {keys:["Shift","Q"],desc:"加入队列",cat:"交付",detail:"Send to Render Queue"},
+  {keys:["Ctrl","Enter"],desc:"开始渲染",cat:"交付",detail:"Start Render - 开始导出渲染"},
+  {keys:["Ctrl","Shift","E"],desc:"导出选项",cat:"交付",detail:"Export - 导出设置"},
+  {keys:["Ctrl","Shift","S"],desc:"保存预设",cat:"交付",detail:"Save as Preset"},
+  {keys:["Ctrl","Shift","Q"],desc:"全部渲染",cat:"交付",detail:"渲染所有队列任务"},
+
+  // ── 文件操作 ──
+  {keys:["Ctrl","N"],desc:"新建项目",cat:"文件操作",detail:"创建新的项目"},
+  {keys:["Ctrl","O"],desc:"打开项目",cat:"文件操作",detail:"打开已有项目"},
+  {keys:["Ctrl","S"],desc:"保存",cat:"文件操作",detail:"保存当前项目"},
+  {keys:["Ctrl","Shift","S"],desc:"另存为",cat:"文件操作",detail:"项目另存为新文件"},
+  {keys:["Ctrl","Shift","N"],desc:"新建时间线",cat:"文件操作",detail:"创建新的时间线"},
+  {keys:["Ctrl","I"],desc:"导入媒体",cat:"文件操作",detail:"Import - 导入媒体文件"},
+  {keys:["Ctrl","E"],desc:"导出",cat:"文件操作",detail:"Export - 导出项目"},
+  {keys:["Ctrl","Q"],desc:"退出",cat:"文件操作",detail:"退出DaVinci Resolve"},
+  {keys:["Ctrl","W"],desc:"关闭",cat:"文件操作",detail:"关闭当前项目或时间线"},
+  {keys:["Ctrl",","],desc:"偏好设置",cat:"文件操作",detail:"Preferences - 打开偏好设置"},
+
+  // ── 工具与面板 ──
+  {keys:["F1"],desc:"帮助文档",cat:"工具与面板",detail:"打开DaVinci Resolve帮助"},
+  {keys:["F2"],desc:"重命名",cat:"工具与面板",detail:"Rename - 重命名选定项"},
+  {keys:["F5"],desc:"智能文件夹",cat:"工具与面板",detail:"Smart Bins - 智能媒体夹"},
+  {keys:["F6"],desc:"媒体池",cat:"工具与面板",detail:"Media Pool - 媒体池面板"},
+  {keys:["F7"],desc:"效果库",cat:"工具与面板",detail:"Effects - 特效库面板"},
+  {keys:["F8"],desc:"检查器",cat:"工具与面板",detail:"Inspector - 打开检查器"},
+  {keys:["F9"],desc:"元数据",cat:"工具与面板",detail:"Metadata - 元数据面板"},
+  {keys:["F10"],desc:"视图选项",cat:"工具与面板",detail:"Timeline View Options"},
+  {keys:["Ctrl","1"],desc:"媒体池面板",cat:"工具与面板",detail:"显示/隐藏媒体池"},
+  {keys:["Ctrl","2"],desc:"时间线面板",cat:"工具与面板",detail:"显示/隐藏时间线"},
+  {keys:["Ctrl","3"],desc:"查看器面板",cat:"工具与面板",detail:"显示/隐藏查看器"},
+  {keys:["Ctrl","4"],desc:"检查器面板",cat:"工具与面板",detail:"显示/隐藏检查器"},
+  {keys:["Ctrl","Shift","H"],desc:"历史记录",cat:"工具与面板",detail:"History - 操作历史"},
+  {keys:["Ctrl","Shift","P"],desc:"项目设置",cat:"工具与面板",detail:"Project Settings"},
+  {keys:["Ctrl","Shift","R"],desc:"渲染队列",cat:"工具与面板",detail:"Render Queue"},
+  {keys:["Ctrl","Shift","L"],desc:"日志面板",cat:"工具与面板",detail:"Log - 日志面板"},
+  {keys:["Ctrl","Shift","M"],desc:"元数据",cat:"工具与面板",detail:"Metadata - 元数据"},
+  {keys:["Ctrl","Shift","A"],desc:"音频面板",cat:"工具与面板",detail:"Audio Panel"},
+];
+let A="全部",Q="";
+const C=[...new Set(D.map(s=>s.cat))].sort((a,b)=>D.filter(x=>x.cat===b).length-D.filter(x=>x.cat===a).length);
+function rK(k,m){let c="key";if(k==="Ctrl"||k==="Shift"||k==="Alt")c+=" mod";else if(k==="Space"||k==="Tab"||k==="Home"||k==="End"||k==="Delete"||k==="Backspace"||k==="Enter"||k==="Escape")c+=" accent";else if(k.length>=2&&k[0]==="F")c+=" accent";else if(m)c+=" accent";return `<span class="${c}">${k}</span>`}
+function rI(s){return `<div class="item"><div class="keys">${s.keys.map(k=>rK(k,s.keys.length>1)).join("")}</div><div class="desc">${s.desc}<div class="detail">${s.detail||""}</div></div></div>`}
+function rA(){const g=document.getElementById("grid"),n=document.getElementById("noResults"),r=document.getElementById("resultCount"),b=document.getElementById("bottomInfo");let i=D;A!=="全部"&&(i=i.filter(s=>s.cat===A));if(Q.trim()){const q=Q.trim().toLowerCase();i=i.filter(s=>(s.desc+" "+s.keys.join(" ")+" "+(s.detail||"")).toLowerCase().includes(q))}g.innerHTML=i.map(rI).join("");n.style.display=i.length?"none":"block";const t=A==="全部"?`共 ${i.length} 条`:`${A} · ${i.length} 条`;r.textContent=t;b.textContent=t}
+function rT(){const c=document.getElementById("tabsContainer"),ac=D.length;let h=`<div class="tab${A==="全部"?" active":""}" data-cat="全部">全部<span class="cnt">${ac}</span></div>`;C.forEach(cat=>{const cnt=D.filter(s=>s.cat===cat).length;h+=`<div class="tab${A===cat?" active":""}" data-cat="${cat}">${cat}<span class="cnt">${cnt}</span></div>`});c.innerHTML=h;c.querySelectorAll(".tab").forEach(el=>{el.addEventListener("click",()=>{A=el.dataset.cat;rT();rA()})})}
+document.getElementById("totalBadge").textContent=D.length;
+const si=document.getElementById("searchInput");si.addEventListener("input",()=>{Q=si.value;rA()});document.getElementById("searchForm").addEventListener("submit",e=>e.preventDefault());
+document.getElementById("scrollTopBtn").addEventListener("click",()=>window.scrollTo({top:0,behavior:"smooth"}));
+rT();rA();
+</script>
+</body>
+</html>
